@@ -1,0 +1,10 @@
+{
+	"not_found":{
+		"en":"Not Found",
+		"th":"ไม่พบ"
+	},
+	"hello_world":{
+		"eb":"Hello World",
+		"th":"ฮัลโหล โลก",
+	}
+}

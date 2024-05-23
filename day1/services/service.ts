@@ -8,26 +8,39 @@ interface RequiredResponse {
   data?: any;
 }
 
+interface ClassRequiredResponse{
+	lang?:string
+}
+
 class ResponseHandler {
-  static sendResponse(res: Response, { status = 200, msg="", error = "", data = [] }: RequiredResponse): void {
-    console.error("LANG",LANG)
-    LANG.error
-    const response = {
-      msg,
-      error,
-      data
-    };
+	lang?:string
 
+	constructor(params:ClassRequiredResponse) {
+        this.lang = params.lang || "en";
+    }
 
-    res.status(status).json(response);
+  	sendResponse(res: Response, { status = 200, msg="", error = "", data = [] }: RequiredResponse): void {    
+	    if (LANG[error]){
+	    	error = LANG[error].en
+	    }
+
+	    const response = {
+	      msg,
+	      error,
+	      data
+	    };
+
+    	res.status(status).json(response);
+  	}
+
+  sendError(res: Response, error: string, status = 400): void {
+  	const handler = new ResponseHandler({ lang: "en" });
+    handler.sendResponse(res, { status, error });
   }
 
-  static sendError(res: Response, error: string, status = 400): void {
-    ResponseHandler.sendResponse(res, { status, error });
-  }
-
-  static sendSuccess(res: Response, data: any, status = 200): void {
-    ResponseHandler.sendResponse(res, { status, data });
+  sendSuccess(res: Response, data: any, status = 200): void {
+  	const handler = new ResponseHandler({ lang: "en" });
+    handler.sendResponse(res, { status, data });
   }
 }
 

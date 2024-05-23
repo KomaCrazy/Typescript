@@ -11,26 +11,24 @@ app.use(upload.none());
 
 
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("========");
-  // console.log(req.query);
-   const data = req.body.box; // รับข้อมูลจาก form-data
-    console.log(data);
-  console.log("========");
-  next();
-});
+// app.use((req: Request, res: Response, next: NextFunction) => {
+// 	console.log("========");
+// 	const data = req.body.box;
+// 	console.log(data);
+//   	console.log("========");
+// 	next();
+// });
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-	const url:string = req.url as string 
-
-
-	ResponseHandler.sendError(res,"not_found", 404);
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+   const handler = new ResponseHandler({ lang: "en" });
+  handler.sendError(res, 'Internal Server Error', 500);
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	const url:string = req.url as string   
-  console.error(err.stack);  
-  ResponseHandler.sendError(res, `Something went wrong >> ${url}`, 500);
+ 	console.error(err.stack);  
+  	ResponseHandler.sendError(res, `Something went wrong >> ${url}`, 500);
 });
 
 
